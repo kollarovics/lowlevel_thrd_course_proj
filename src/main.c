@@ -9,6 +9,7 @@ int main(void)
 {
      threadpool_t pool;
      threadpool_init(&pool);
+
      for (int i = 0; i < 15; i++)
      {
           int* idx = malloc(sizeof(int));

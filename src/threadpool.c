@@ -90,10 +90,8 @@ void threadpool_destroy(threadpool_t* pool)
     pthread_mutex_unlock(&(pool->lock));
     for (int i = 0; i < THREADS; i++)
     {
-        if (pool->threads[i] != NULL)
-        {
-            pthread_join(pool->threads[i], NULL);
-        }
+
+        pthread_join(pool->threads[i], NULL);
     }
     pthread_mutex_destroy(&(pool->lock));
     pthread_cond_destroy(&(pool->notify));
