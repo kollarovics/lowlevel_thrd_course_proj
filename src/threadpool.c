@@ -8,6 +8,11 @@
 
 void* thread_function(void* threadpool) {
     threadpool_t* pool = (threadpool_t*)threadpool;
+    if (pool == NULL)
+    {
+        fprintf(stderr, "Invalid threadpool\n");
+        return NULL;
+    }
 
     while (1) {
         pthread_mutex_lock(&(pool->lock));
@@ -36,6 +41,11 @@ void* thread_function(void* threadpool) {
 
 void threadpool_init(threadpool_t* pool)
 {
+    if (pool == NULL)
+    {
+        fprintf(stderr, "Invalid threadpool\n");
+        return;
+    }
     pool->queued = 0;
     pool->queue_front = 0;
     pool->queue_back = 0;
@@ -52,6 +62,11 @@ void threadpool_init(threadpool_t* pool)
 
 void threadpool_destroy(threadpool_t* pool)
 {
+    if (pool == NULL)
+    {
+        fprintf(stderr, "Invalid threadpool\n");
+        return;
+    }
     pthread_mutex_lock(&(pool->lock));
     pool->stop = 1;
     pthread_cond_broadcast(&(pool->notify));
