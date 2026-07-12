@@ -31,8 +31,11 @@ void* thread_function(void* threadpool) {
         pool->queued--;
 
         pthread_mutex_unlock(&(pool->lock));
+        if (task.fn != NULL)
+        {
+            (*(task.fn))(task.arg);
+        }
 
-        (*(task.fn))(task.arg);
     }
 
     return NULL;
