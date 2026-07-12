@@ -131,6 +131,7 @@ void example_task(void* arg)
     } else
     {
         fprintf(stderr, "Invalid task argument\n");
+        return;
     }
 
     sleep(1);
