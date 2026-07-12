@@ -5,7 +5,7 @@
 
 void *thread_function(void* arg)
 {
-    threadpool_t* the_pool = (threadpool_t*)arg;
+    threadpool_t* the_pool = arg;
     while (the_pool->stop == 0)
     {
         pthread_cond_wait(&the_pool->notify, &the_pool->lock);
@@ -14,11 +14,7 @@ void *thread_function(void* arg)
         the_pool->queue_front = (the_pool->queue_front + 1) % QUEUE_SIZE;
         the_pool->queued--;
         pthread_mutex_unlock(&the_pool->lock);
-        // if (my_task.fn != NULL)
-        // {
         my_task.fn(my_task.arg);
-        // }
-
     };
     return NULL;
 }
