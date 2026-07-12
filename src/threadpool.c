@@ -72,7 +72,6 @@ void threadpool_init(threadpool_t* pool)
         if (pthread_create(&(pool->threads[i]), NULL, thread_function, pool) != 0)
         {
             fprintf(stderr, "pthread_create failed\n");
-
         }
     }
 }
