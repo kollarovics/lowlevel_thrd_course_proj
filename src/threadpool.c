@@ -38,7 +38,14 @@ void threadpool_init(threadpool_t* pool)
 
 void threadpool_destroy(threadpool_t* pool)
 {
-
+    pool->stop = 1;
+    pthread_cond_broadcast(&(pool->notify));
+    for (int i = 0; i < THREADS; i++)
+    {
+        pthread_join(pool->threads[i], NULL);
+    }
+    pthread_mutex_destroy(&(pool->lock));
+    pthread_cond_destroy(&(pool->notify));
 }
 
 void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
