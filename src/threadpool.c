@@ -3,19 +3,30 @@
 #import "../inc/threadpool.h"
 
 
-void *thread_function(void* arg)
-{
-    threadpool_t* the_pool = arg;
-    // while (the_pool->stop == 0)
-    // {
-    //     pthread_cond_wait(&the_pool->notify, &the_pool->lock);
-    //     pthread_mutex_lock(&the_pool->lock);
-    //     const task_t my_task = the_pool->task_queue[the_pool->queue_front];
-    //     the_pool->queue_front = (the_pool->queue_front + 1) % QUEUE_SIZE;
-    //     the_pool->queued--;
-    //     pthread_mutex_unlock(&the_pool->lock);
-    //     my_task.fn(my_task.arg);
-    // };
+void* thread_function(void* threadpool) {
+    threadpool_t* pool = (threadpool_t*)threadpool;
+
+    while (1) {
+        pthread_mutex_lock(&(pool->lock));
+
+        while (pool->queued == 0 && !pool->stop) {
+            pthread_cond_wait(&(pool->notify), &(pool->lock));
+        }
+
+        if (pool->stop) {
+            pthread_mutex_unlock(&(pool->lock));
+            pthread_exit(NULL);
+        }
+
+        task_t task = pool->task_queue[pool->queue_front];
+        pool->queue_front = (pool->queue_front + 1) % QUEUE_SIZE;
+        pool->queued--;
+
+        pthread_mutex_unlock(&(pool->lock));
+
+        (*(task.fn))(task.arg);
+    }
+
     return NULL;
 }
 
