@@ -69,6 +69,7 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
     if (pool == NULL || function == NULL)
     {
         fprintf(stderr, "Invalid task, pool or function is null\n");
+        return;
     }
 
   pthread_mutex_lock(&(pool->lock));
