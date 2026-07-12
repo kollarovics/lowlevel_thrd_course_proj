@@ -1,5 +1,6 @@
 #import <pthread.h>
 #include <stdio.h>
+#import <unistd.h>
 #import "../inc/threadpool.h"
 
 
@@ -68,14 +69,25 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
   task.arg = arg;
 
   pthread_mutex_lock(&(pool->lock));
-  pool->task_queue[pool->queue_back] = task;
-  pool->queue_back = (pool->queue_back + 1) % QUEUE_SIZE;
-  pool->queued++;
+  int next_bck = (pool->queue_back + 1) % QUEUE_SIZE;
+  if (pool->queued < QUEUE_SIZE)
+  {
+      pool->task_queue[next_bck] = task;
+      pool->queue_back = next_bck;
+      pool->queued++;
+      pthread_cond_signal(&(pool->notify));
+  } else
+  {
+      printf("Queue is full, task not added\n");
+  }
+
   pthread_mutex_unlock(&(pool->lock));
-  pthread_cond_signal(&(pool->notify));
+
 }
 
 void example_task(void* arg)
 {
-
+    int* num = (int*)arg;
+    printf("Processing task %d\n", *num);
+    sleep(1);  // Simulate task work
 }
