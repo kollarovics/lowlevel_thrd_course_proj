@@ -9,7 +9,8 @@ void *thread_function(void* arg)
     while (the_pool->stop == 0)
     {
         pthread_cond_wait(&the_pool->notify, &the_pool->lock);
-        task_t my_task = the_pool->task_queue[the_pool->queue_front];
+        pthread_mutex_lock(&the_pool->lock);
+        const task_t my_task = the_pool->task_queue[the_pool->queue_front];
         the_pool->queue_front = (the_pool->queue_front + 1) % QUEUE_SIZE;
         the_pool->queued--;
         pthread_mutex_unlock(&the_pool->lock);
