@@ -66,6 +66,11 @@ void threadpool_destroy(threadpool_t* pool)
 
 void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 {
+    if (pool == NULL || function == NULL)
+    {
+        fprintf(stderr, "Invalid task, pool or function is null\n");
+    }
+
   pthread_mutex_lock(&(pool->lock));
   int next_bck = (pool->queue_back + 1) % QUEUE_SIZE;
   if (pool->queued < QUEUE_SIZE)
@@ -87,7 +92,14 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 void example_task(void* arg)
 {
     int* num = (int*)arg;
-    printf("Processing task %d\n", *num);
+    if (arg != NULL)
+    {
+        printf("Processing task %d\n", *num);
+    } else
+    {
+        fprintf(stderr, "Invalid task argument\n");
+    }
+
     sleep(1);
     free(arg);// Simulate task work
 }
