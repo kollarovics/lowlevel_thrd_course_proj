@@ -105,6 +105,10 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
     }
 
   pthread_mutex_lock(&(pool->lock));
+    if (pool->queue_back < 0)
+    {
+        pool->queue_back = 0;
+    }
 
   if (pool->queued < QUEUE_SIZE)
   {
