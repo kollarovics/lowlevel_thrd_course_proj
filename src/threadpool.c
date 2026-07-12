@@ -63,5 +63,5 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 
 void example_task(void* arg)
 {
-  printf("Completed!\n");
+  // printf("Completed!\n");
 }
