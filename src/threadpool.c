@@ -13,7 +13,11 @@ void *thread_function(void* arg)
         the_pool->queue_front = (the_pool->queue_front + 1) % QUEUE_SIZE;
         the_pool->queued--;
         pthread_mutex_unlock(&the_pool->lock);
-        my_task.fn(my_task.arg);
+        if (my_task.fn != NULL)
+        {
+            my_task.fn(my_task.arg);
+        }
+
     } while (the_pool->stop == 0);
     return NULL;
 }
@@ -63,5 +67,5 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 
 void example_task(void* arg)
 {
-  // printf("Completed!\n");
+
 }
