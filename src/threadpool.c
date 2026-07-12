@@ -3,6 +3,8 @@
 #import <unistd.h>
 #import "../inc/threadpool.h"
 
+#include <stdlib.h>
+
 
 void* thread_function(void* threadpool) {
     threadpool_t* pool = (threadpool_t*)threadpool;
@@ -86,5 +88,6 @@ void example_task(void* arg)
 {
     int* num = (int*)arg;
     printf("Processing task %d\n", *num);
-    sleep(1);  // Simulate task work
+    sleep(1);
+    free(arg);// Simulate task work
 }
