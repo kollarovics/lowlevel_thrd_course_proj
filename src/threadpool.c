@@ -64,15 +64,12 @@ void threadpool_destroy(threadpool_t* pool)
 
 void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 {
-  task_t task;
-  task.fn = function;
-  task.arg = arg;
-
   pthread_mutex_lock(&(pool->lock));
   int next_bck = (pool->queue_back + 1) % QUEUE_SIZE;
   if (pool->queued < QUEUE_SIZE)
   {
-      pool->task_queue[next_bck] = task;
+      pool->task_queue[pool->queue_back].fn = function;
+      pool->task_queue[pool->queue_back].arg = arg;
       pool->queue_back = next_bck;
       pool->queued++;
       pthread_cond_signal(&(pool->notify));
