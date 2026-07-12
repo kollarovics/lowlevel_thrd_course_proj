@@ -6,7 +6,7 @@
 void *thread_function(void* arg)
 {
     threadpool_t* the_pool = (threadpool_t*)arg;
-    do
+    while (the_pool->stop == 0)
     {
         pthread_cond_wait(&the_pool->notify, &the_pool->lock);
         // task_t my_task = the_pool->task_queue[the_pool->queue_front];
@@ -18,7 +18,7 @@ void *thread_function(void* arg)
         //     my_task.fn(my_task.arg);
         // }
 
-    } while (the_pool->stop == 0);
+    };
     return NULL;
 }
 
