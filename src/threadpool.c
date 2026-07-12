@@ -124,9 +124,10 @@ void threadpool_add_task(threadpool_t* pool, void (*function)(void*), void* arg)
 
 void example_task(void* arg)
 {
-    int* num = (int*)arg;
+
     if (arg != NULL)
     {
+        int* num = (int*)arg;
         printf("Processing task %d\n", *num);
     } else
     {
