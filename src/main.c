@@ -2,7 +2,7 @@
 #import <stdlib.h>
 #import <stdio.h>
 #import <unistd.h>
-#import "threadpool.h"
+#import "../inc/threadpool.h"
 
 
 int main(void)

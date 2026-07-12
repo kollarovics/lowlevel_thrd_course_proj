@@ -1,5 +1,5 @@
 #import <pthread.h>
-#import "threadpool.h"
+#import "../inc/threadpool.h"
 
 
 void *thread_function(void* arg)
