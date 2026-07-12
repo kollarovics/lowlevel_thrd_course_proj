@@ -15,7 +15,7 @@ void *thread_function(void* arg)
         pthread_mutex_unlock(&the_pool->lock);
         // if (my_task.fn != NULL)
         // {
-        //     my_task.fn(my_task.arg);
+        my_task.fn(my_task.arg);
         // }
 
     };
