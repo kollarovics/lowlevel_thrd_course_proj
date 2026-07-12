@@ -54,8 +54,18 @@ void threadpool_init(threadpool_t* pool)
     pool->queue_back = 0;
     pool->stop = 0;
 
-    pthread_mutex_init(&(pool->lock), NULL);
-    pthread_cond_init(&(pool->notify), NULL);
+    if (pthread_mutex_init(&(pool->lock), NULL) != 0)
+    {
+        fprintf(stderr, "pthread_mutex_init failed\n");
+        return;
+    }
+
+    if (pthread_cond_init(&(pool->notify), NULL) != 0)
+    {
+        fprintf(stderr, "pthread_cond_init failed\n");
+        pthread_mutex_destroy(&(pool->lock));
+        return;
+    }
 
     for (int i = 0; i < THREADS; i++)
     {

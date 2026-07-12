@@ -23,6 +23,7 @@ int main(void)
 
      sleep(4);
      threadpool_destroy(&pool);
+     return 0;
 }
 
 
