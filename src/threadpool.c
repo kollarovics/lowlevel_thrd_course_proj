@@ -69,7 +69,7 @@ void threadpool_init(threadpool_t *pool) {
 }
 
 void threadpool_destroy(threadpool_t *pool) {
-    if (pool == NULL || pool->initialized != 1) {
+    if (pool == NULL || pool->initialized != 0) {
         fprintf(stderr, "Invalid threadpool\n");
         return;
     }
