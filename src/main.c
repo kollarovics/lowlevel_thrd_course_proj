@@ -8,7 +8,7 @@
 int main(void)
 {
      threadpool_t pool;
-     // threadpool_init(&pool);
+     threadpool_init(&pool);
 
      for (int i = 0; i < 15; i++)
      {
@@ -23,7 +23,7 @@ int main(void)
      }
 
      sleep(4);
-     threadpool_destroy(&pool);
+
      threadpool_destroy(&pool);
      return 0;
 }

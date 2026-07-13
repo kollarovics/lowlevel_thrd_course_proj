@@ -76,13 +76,15 @@ void threadpool_destroy(threadpool_t *pool) {
         fprintf(stderr, "Invalid threadpool\n");
         return;
     }
+    printf("Destroying threadpool, initialized:%d\n", pool->initialized);
     pthread_mutex_lock(&(pool->lock));
     pool->stop = 1;
     pthread_cond_broadcast(&(pool->notify));
     pthread_mutex_unlock(&(pool->lock));
     for (int i = 0; i < THREADS; i++) {
-        printf("Joining thread %d\n", i);
+
         if (pool->thread_stats[i] == 1) {
+          printf("Joining thread %d\n", i);
           pthread_join(pool->threads[i], NULL);
           pool->thread_stats[i] = 0;
         }
