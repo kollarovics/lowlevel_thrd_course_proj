@@ -63,6 +63,9 @@ void threadpool_init(threadpool_t *pool) {
     for (int i = 0; i < THREADS; i++) {
         if (pthread_create(&(pool->threads[i]), NULL, thread_function, pool) != 0) {
             fprintf(stderr, "pthread_create failed\n");
+            pool->thread_stats[i] = -1;
+        } else {
+            pool->thread_stats[i] = 1;
         }
     }
     pool->initialized = 1;
@@ -78,7 +81,9 @@ void threadpool_destroy(threadpool_t *pool) {
     pthread_cond_broadcast(&(pool->notify));
     pthread_mutex_unlock(&(pool->lock));
     for (int i = 0; i < THREADS; i++) {
-        //pthread_join(pool->threads[i], NULL);
+        if (pool->thread_stats[i] == 1) {
+          pthread_join(pool->threads[i], NULL);
+        }
     }
     pthread_mutex_destroy(&(pool->lock));
     pthread_cond_destroy(&(pool->notify));

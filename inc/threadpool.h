@@ -15,6 +15,7 @@ typedef struct {
     pthread_mutex_t lock;
     pthread_cond_t notify;
     pthread_t threads[THREADS];
+    int thread_stats[THREADS];
     task_t task_queue[QUEUE_SIZE];
     int queued;
     int queue_front;
