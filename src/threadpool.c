@@ -93,7 +93,7 @@ void threadpool_destroy(threadpool_t *pool) {
 }
 
 void threadpool_add_task(threadpool_t *pool, void (*function)(void *), void *arg) {
-    if (pool == NULL || function == NULL ) {
+    if (pool == NULL || function == NULL || pool->initialized != 1) {
         fprintf(stderr, "Invalid task, pool or function is null\n");
         return;
     }
