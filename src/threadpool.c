@@ -69,7 +69,7 @@ void threadpool_init(threadpool_t *pool) {
 }
 
 void threadpool_destroy(threadpool_t *pool) {
-    if (pool == NULL || pool->initialized != 0) {
+    if (pool == NULL || pool->initialized != 1) {
         fprintf(stderr, "Invalid threadpool\n");
         return;
     }
@@ -78,7 +78,7 @@ void threadpool_destroy(threadpool_t *pool) {
     pthread_cond_broadcast(&(pool->notify));
     pthread_mutex_unlock(&(pool->lock));
     for (int i = 0; i < THREADS; i++) {
-        pthread_join(pool->threads[i], NULL);
+        //pthread_join(pool->threads[i], NULL);
     }
     pthread_mutex_destroy(&(pool->lock));
     pthread_cond_destroy(&(pool->notify));
