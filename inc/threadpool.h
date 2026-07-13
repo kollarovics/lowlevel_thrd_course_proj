@@ -20,6 +20,7 @@ typedef struct {
     int queue_front;
     int queue_back;
     int stop;
+    int initialized;
 } threadpool_t;
 
 // Function declarations

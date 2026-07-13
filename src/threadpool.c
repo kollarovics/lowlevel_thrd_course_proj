@@ -74,11 +74,12 @@ void threadpool_init(threadpool_t* pool)
             fprintf(stderr, "pthread_create failed\n");
         }
     }
+    pool->initialized = 1;
 }
 
 void threadpool_destroy(threadpool_t* pool)
 {
-    if (pool == NULL)
+    if (pool == NULL || pool->initialized != 0)
     {
         fprintf(stderr, "Invalid threadpool\n");
         return;
