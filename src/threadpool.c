@@ -84,8 +84,10 @@ void threadpool_destroy(threadpool_t *pool) {
         printf("Joining thread %d\n", i);
         if (pool->thread_stats[i] == 1) {
           pthread_join(pool->threads[i], NULL);
+          pool->thread_stats[i] = 0;
         }
     }
+    pool->initialized = 0;
     pthread_mutex_destroy(&(pool->lock));
     pthread_cond_destroy(&(pool->notify));
 }
